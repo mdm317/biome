@@ -26,6 +26,7 @@ pub(super) struct StackFrame {
 /// data structures. Such structures should be stored on the [PrinterState] instead.
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub(super) struct PrintElementArgs {
+    previous_indent: Indention,
     indent: Indention,
     mode: PrintMode,
 }
@@ -33,6 +34,7 @@ pub(super) struct PrintElementArgs {
 impl PrintElementArgs {
     pub fn new(indent: Indention) -> Self {
         Self {
+            previous_indent: indent,
             indent,
             ..Self::default()
         }
@@ -47,12 +49,13 @@ impl PrintElementArgs {
     }
 
     pub fn increment_indent_level(mut self, indent_style: IndentStyle) -> Self {
+        self.previous_indent = self.indent;
         self.indent = self.indent.increment_level(indent_style);
         self
     }
 
     pub fn decrement_indent(mut self) -> Self {
-        self.indent = self.indent.decrement();
+        self.indent = self.previous_indent;
         self
     }
 
@@ -62,6 +65,7 @@ impl PrintElementArgs {
     }
 
     pub fn set_indent_align(mut self, count: NonZeroU8) -> Self {
+        self.previous_indent = self.indent;
         self.indent = self.indent.set_align(count);
         self
     }
@@ -76,6 +80,7 @@ impl Default for PrintElementArgs {
     fn default() -> Self {
         Self {
             indent: Indention::Level(0),
+            previous_indent: Indention::Level(0),
             mode: PrintMode::Expanded,
         }
     }

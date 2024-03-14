@@ -27,6 +27,8 @@ our [guidelines for writing a good changelog entry](https://github.com/biomejs/b
 
 - Fix enabled rules calculation. The precendence of individual rules, `all` and `recommend` presets in top-level and group-level configs is now correctly respected. More details can be seen in ([#2072](https://github.com/biomejs/biome/pull/2072)) ([#2028](https://github.com/biomejs/biome/issues/2028)). Contributed by @Sec-ant
 
+- Fix [https://github.com/biomejs/biome/issues/2037](https://github.com/biomejs/biome/issues/2037) Now, align, indent, and dedent will work exactly the same as Prettier even when changing the indent style and indent width.
+
 ### Editors
 
 ### Formatter

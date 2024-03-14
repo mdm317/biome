@@ -818,18 +818,6 @@ impl Indention {
         }
     }
 
-    /// Decrements the indent by one by:
-    /// * Reducing the level by one if this is [Indent::Level]
-    /// * Removing the `align` if this is [Indent::Align]
-    ///
-    /// No-op if the level is already zero.
-    fn decrement(self) -> Self {
-        match self {
-            Indention::Level(level) => Indention::Level(level.saturating_sub(1)),
-            Indention::Align { level, .. } => Indention::Level(level),
-        }
-    }
-
     /// Adds an `align` of `count` spaces to the current indention.
     ///
     /// It increments the `level` value if the current value is [Indent::IndentAlign].
@@ -841,9 +829,12 @@ impl Indention {
             },
 
             // Convert the existing align to an indent
-            Indention::Align { level: indent, .. } => Indention::Align {
-                level: indent + 1,
-                align: count,
+            Indention::Align {
+                level: indent,
+                align,
+            } => Indention::Align {
+                level: indent,
+                align: align.saturating_add(count.into()),
             },
         }
     }
